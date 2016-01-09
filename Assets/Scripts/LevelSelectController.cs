@@ -7,10 +7,16 @@ public class LevelSelectController : MonoBehaviour {
 	public GameObject easyLevel;
 	public GameObject averagePanel;
 	public GameObject difficultPanel;
+	public GameObject backBtnCallBack;
 
 	// Use this for initialization
 	void Start () {
-	
+		
+	}
+
+	void OnEnable(){
+		HeaderController.instance.activePanel = gameObject;
+		HeaderController.instance.ActivateHeader(true);
 	}
 	
 	public void OnClickEasy(){
@@ -26,5 +32,10 @@ public class LevelSelectController : MonoBehaviour {
 	public void OnClickHard(){
 		levelSelect.SetActive(false);
 		difficultPanel.SetActive(true);
+	}
+
+	public void OnClickBack(){
+		backBtnCallBack.SetActive(true);
+		gameObject.SetActive(false);
 	}
 }

@@ -12,6 +12,11 @@ public class StageSelectController : MonoBehaviour {
 	
 	}
 
+	void OnEnable(){
+		HeaderController.instance.activePanel = gameObject;
+		HeaderController.instance.ActivateHeader(false);
+	}
+
 	public void OnClickStages(int stageNum){
 		SceneManager.LoadScene(stageNum);
 	}
