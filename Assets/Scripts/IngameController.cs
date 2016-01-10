@@ -1,18 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
 
 public class IngameController : MonoBehaviour {
 
 	public static IngameController instance;
 	public GameObject pausePanel;
 	public GameObject gameOverPanel;
+	public Text gemText;
 	public bool isGameOver = false;
 
+	private int gemCounter = 0;
+
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		instance = this;
+	}
+
+	void Start(){
+		gemCounter = DataManager.instance.GetGemCount();
+		gemText.text = gemCounter.ToString();
+	}
+
+	public void UpdateGem()
+	{
+		gemCounter++;
+		DataManager.instance.SaveGemCount(gemCounter);
+		gemText.text = gemCounter.ToString();
+	}
+
+	public void ShowGameOver()
+	{
+		gameOverPanel.SetActive(true);
+		isGameOver = true;
 	}
 	
 	public void OnClickPause()
@@ -31,7 +52,6 @@ public class IngameController : MonoBehaviour {
 	{
 		Time.timeScale = 1f;
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-		
 	}
 
 	public void OnClickNext()
@@ -49,11 +69,5 @@ public class IngameController : MonoBehaviour {
 	{
 		Time.timeScale = 1f;
 		SceneManager.LoadScene(0);
-	}
-
-	public void ShowGameOver()
-	{
-		gameOverPanel.SetActive(true);
-		isGameOver = true;
 	}
 }

@@ -41,16 +41,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
 		}
-
-        void OnTriggerEnter(Collider col) {
-            if (col.tag == "Diamond") {
-                iTween.MoveTo(col.gameObject, iTween.Hash("y", 1f,"time",1.5f));
-                Destroy(col.gameObject, 2f);
-                Debug.Log("collide on diamond");
-
-            }
-        }
-
+			
 
 		public void Move(Vector3 move, bool crouch, bool jump)
 		{
