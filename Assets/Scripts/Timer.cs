@@ -17,14 +17,16 @@ public class Timer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		if(IngameController.instance.isGameOver)
+			return;
+		
         currentTime += Time.deltaTime;
 
        // roundedRestSeconds = Mathf.CeilToInt(restSeconds);//
         seconds = currentTime % 60;
         minutes = currentTime / 60;
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-
-
         //timerText.text = currentTime.ToString("N0");
 
     }
