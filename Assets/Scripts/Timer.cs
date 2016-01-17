@@ -35,7 +35,7 @@ public class Timer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(IngameController.instance.isGameOver)
+		if(IngameController.instance.isGameOver || IngameController.instance.isPaused )
 		{
 			SaveProgressData();
 			return;

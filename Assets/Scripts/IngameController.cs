@@ -10,6 +10,7 @@ public class IngameController : MonoBehaviour {
 	public GameObject gameOverPanel;
 	public Text gemText;
 	public bool isGameOver = false;
+	public bool isPaused = false;
 
 	private int gemCounter = 0;
 
@@ -39,12 +40,14 @@ public class IngameController : MonoBehaviour {
 	public void OnClickPause()
 	{
 		pausePanel.SetActive(true);
+		isPaused = true;
 		Time.timeScale = 0f;
 	}
 
 	public void OnClickResume()
 	{
 		pausePanel.SetActive(false);
+		isPaused = false;
 		Time.timeScale = 1f;
 	}
 
