@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class Timer : MonoBehaviour {
@@ -23,14 +24,20 @@ public class Timer : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         timerText = GetComponent<Text>();
-		timeTobeat = DataManager.instance.GetHighScore();
+
+		// if in current progress
+		if(DataManager.instance.isInCurrentLevel()){
+			currentTime = DataManager.instance.GetCurrentScore();
+			timeTobeat =  DataManager.instance.GetLevelHighScore();
+			DisplayTime(true, timerText);
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(IngameController.instance.isGameOver)
+		if(IngameController.instance.isGameOver || IngameController.instance.isPaused )
 		{
-			SaveHighScore();
+			SaveProgressData();
 			return;
 		}
 		
@@ -46,16 +53,21 @@ public class Timer : MonoBehaviour {
 		uitext.text = string.Format("{0:00}:{1:00}", minutes, seconds);
 	}
 
-	void SaveHighScore()
+	void SaveProgressData()
 	{
-		if(timeTobeat == 0f)
-			DataManager.instance.SaveHighScore(currentTime);
+//		if(timeTobeat == 0f)
+//			DataManager.instance.SaveHighScore(currentTime);
+//
+//		else if(currentTime < timeTobeat)
+//		{
+//			timeTobeat = currentTime;
+//			DataManager.instance.SaveHighScore(timeTobeat);
+//		}
 
-		else if(currentTime < timeTobeat)
+		if(DataManager.instance.isInCurrentLevel())
 		{
-			timeTobeat = currentTime;
-			DataManager.instance.SaveHighScore(timeTobeat);
+			DataManager.instance.SaveCurrentLevel(SceneManager.GetActiveScene().buildIndex + 1);
+			DataManager.instance.SaveCurrentScore(currentTime);
 		}
-
 	}
 }

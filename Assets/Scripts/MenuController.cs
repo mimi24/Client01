@@ -29,4 +29,10 @@ public class MenuController : MonoBehaviour {
 		storePanel.SetActive(true);
 		gameObject.SetActive(false);
 	}
+
+	public void OnClickHighScore()
+	{
+		HighScorePanel.SetActive(true);
+		gameObject.SetActive(false);
+	}
 }

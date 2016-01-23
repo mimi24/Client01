@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameoverController : MonoBehaviour {
 
@@ -15,9 +16,9 @@ public class GameoverController : MonoBehaviour {
 	void OnEnable () {
 		gemText.text = DataManager.instance.GetGemCount().ToString();
 		Timer.instance.DisplayTime(true, currentTimeText);
-		Timer.instance.DisplayTime(false, highScoreText);
 
 		StartCoroutine(AnimateStar());
+		DisplayHighScore();
 	}
 
 	IEnumerator AnimateStar()
@@ -33,6 +34,16 @@ public class GameoverController : MonoBehaviour {
 			));
 			yield return new WaitForSeconds(0.3f);
 			
+		}
+	}
+
+	void DisplayHighScore()
+	{
+		int levelIndex = DataManager.instance.GetLevelIndex();
+		if(levelIndex != 0){
+			Timer.instance.DisplayTime(false, highScoreText);
+			highScoreText.transform.parent.gameObject.SetActive(true);
+			DataManager.instance.SaveCurrentScore(0f);
 		}
 	}
 }
