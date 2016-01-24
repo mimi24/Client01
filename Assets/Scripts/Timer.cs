@@ -15,6 +15,7 @@ public class Timer : MonoBehaviour {
     public float roundedSeconds;
   
 	private string tempString;
+	private bool saveOnce = false;
 
 	void Awake()
 	{
@@ -26,16 +27,19 @@ public class Timer : MonoBehaviour {
         timerText = GetComponent<Text>();
 
 		// if in current progress
-		if(DataManager.instance.isInCurrentLevel()){
-			currentTime = DataManager.instance.GetCurrentScore();
-			timeTobeat =  DataManager.instance.GetLevelHighScore();
-			DisplayTime(true, timerText);
-		}
+//		if(DataManager.instance.isInCurrentLevel()){
+//			currentTime = DataManager.instance.GetCurrentScore();
+//			timeTobeat =  DataManager.instance.GetLevelHighScore();
+//			DisplayTime(true, timerText);
+//		}
+
+		currentTime = 0f;
+		timeTobeat = DataManager.instance.GetMazeHighScore();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(IngameController.instance.isGameOver || IngameController.instance.isPaused )
+		if(IngameController.instance.isGameOver /* || IngameController.instance.isPaused */)
 		{
 			SaveProgressData();
 			return;
@@ -47,7 +51,7 @@ public class Timer : MonoBehaviour {
 
 	public void DisplayTime(bool isCurrentTime, Text uitext)
 	{
-		float time = isCurrentTime ? currentTime : timeTobeat;
+		float time = isCurrentTime ? currentTime : DataManager.instance.GetMazeHighScore();
 		seconds = time % 60;
 		minutes = time / 60;
 		uitext.text = string.Format("{0:00}:{1:00}", minutes, seconds);
@@ -55,19 +59,37 @@ public class Timer : MonoBehaviour {
 
 	void SaveProgressData()
 	{
-//		if(timeTobeat == 0f)
-//			DataManager.instance.SaveHighScore(currentTime);
-//
-//		else if(currentTime < timeTobeat)
-//		{
-//			timeTobeat = currentTime;
-//			DataManager.instance.SaveHighScore(timeTobeat);
-//		}
-
-		if(DataManager.instance.isInCurrentLevel())
-		{
-			DataManager.instance.SaveCurrentLevel(SceneManager.GetActiveScene().buildIndex + 1);
-			DataManager.instance.SaveCurrentScore(currentTime);
+		if(saveOnce)
+			return;
+	
+		saveOnce = true;
+		if(timeTobeat == 0f){
+			timeTobeat = currentTime;
+			DataManager.instance.SaveMazeHighScore(timeTobeat);
 		}
+
+		else if(currentTime < timeTobeat)
+		{
+			timeTobeat = currentTime;
+			DataManager.instance.SaveMazeHighScore(timeTobeat);
+		}
+
+		//Save locally to get overall
+		float localScore = DataManager.instance.GetLocalHighScore(DataManager.instance.GetCurrentMazeIndex());
+		if(localScore == 0f)
+			DataManager.instance.SaveLocalHighScore(currentTime);
+		
+		else if(currentTime < localScore)
+			DataManager.instance.SaveLocalHighScore(currentTime);
+		
+	
+		if(DataManager.instance.GetCurrentMazeIndex() >= DataManager.instance.GetCurrentMazeStage())
+			DataManager.instance.SaveCurrentMazeStage();
+		
+//		if(DataManager.instance.isInCurrentLevel())
+//		{
+//			DataManager.instance.SaveCurrentLevel(SceneManager.GetActiveScene().buildIndex + 1);
+//			DataManager.instance.SaveCurrentScore(currentTime);
+//		}
 	}
 }

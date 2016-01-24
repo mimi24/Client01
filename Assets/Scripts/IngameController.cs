@@ -33,8 +33,8 @@ public class IngameController : MonoBehaviour {
 
 	public void ShowGameOver()
 	{
+		//isGameOver = true;
 		gameOverPanel.SetActive(true);
-		isGameOver = true;
 	}
 	
 	public void OnClickPause()

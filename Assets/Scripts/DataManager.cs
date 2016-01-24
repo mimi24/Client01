@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class DataManager : MonoBehaviour {
 
 	public static DataManager instance;
-	public Dictionary<int, List<float>> highScoreList = new Dictionary<int, List<float>>();
 	private int highScoreCount = 3;
 
 	// Use this for initialization
@@ -20,49 +19,62 @@ public class DataManager : MonoBehaviour {
 			ResetData();
 	}
 
-	public int GetLevelIndex()
+	public int GetCurrentMazeIndex()
 	{
-		int currentStage = SceneManager.GetActiveScene().buildIndex;
-		if(currentStage == 9)
+		return SceneManager.GetActiveScene().buildIndex;
+	}
+
+	public int GetPerDifficultyIndex()
+	{
+		int currentStage =  GetCurrentMazeStage();
+		if(currentStage < 10)
+			return 0;
+		else if(currentStage < 15)
 			return 1;
-		else if(currentStage == 14)
-			return 2;
 		else if(currentStage == 15)
-			return 3;
-		else return 0;
+			return 2;
+		else
+			return 0;
+	}
+
+	public string GetPlayerName()
+	{
+		return PlayerPrefs.GetString("PlayerName", null);
+	}
+
+	public void SetPlayerName(string name)
+	{
+		PlayerPrefs.SetString("PlayerName",name);
 	}
 
 	public bool isInCurrentLevel()
 	{
-		if(GetCurrentLevel() == SceneManager.GetActiveScene().buildIndex)
+		if(GetCurrentMazeStage() == SceneManager.GetActiveScene().buildIndex)
 			return true;
 		return false;
 	}
 
 	#region CurrentProgress
-	public int GetCurrentLevel()
+	public int GetCurrentMazeStage()
 	{
 		return PlayerPrefs.GetInt("Level", 1);
 	}
 
-	public void SaveCurrentLevel(int levelNum)
+	public void SaveCurrentMazeStage()
 	{
-		PlayerPrefs.SetInt("Level", levelNum);
+		PlayerPrefs.SetInt("Level", GetCurrentMazeIndex() + 1);
+	}
+
+	public void ResetCurrentMazeStage()
+	{
+		PlayerPrefs.SetInt("Level", 1);
+		SetPlayerName(null);
+		ResetLocalHighScore();
 	}
 
 	#endregion
 
 	#region Score
-		
-	public float GetHighScore()
-	{
-		return PlayerPrefs.GetFloat("Highscore"+SceneManager.GetActiveScene().buildIndex.ToString(), 0f);
-	}
-
-	public void SaveHighScore(float value)
-	{
-		PlayerPrefs.SetFloat("Highscore"+SceneManager.GetActiveScene().buildIndex.ToString(), value);
-	}
 
 	public float GetCurrentScore()
 	{
@@ -76,7 +88,7 @@ public class DataManager : MonoBehaviour {
 
 	public float GetLevelHighScore()
 	{
-		string key = GetLevelIndex() +"_"+1.ToString();
+		string key = GetPerDifficultyIndex() +"_"+1.ToString();
 		return  PlayerPrefs.GetFloat("HighScoreLevel"+key, 0f);
 		
 	}
@@ -97,6 +109,152 @@ public class DataManager : MonoBehaviour {
 				currentName = name;
 			}
 		}
+	}
+
+	public void SaveMazeHighScore(float currentScore)
+	{
+		string currentName = GetPlayerName();
+		int level = GetCurrentMazeIndex();
+
+		for(int i = 0; i< highScoreCount; i++)
+		{
+			string key = level.ToString() +"_"+i.ToString();
+			float score = PlayerPrefs.GetFloat("HighScorePerMaze"+key, 0f);
+			string name = PlayerPrefs.GetString("NamePerMaze"+key,null);
+		
+			if(score == 0f)
+			{
+				PlayerPrefs.SetFloat("HighScorePerMaze"+key, currentScore);
+				PlayerPrefs.SetString("NamePerMaze"+key, currentName);
+
+				currentScore = score;
+				currentName = name;
+			}
+
+			else if(currentScore < score){
+				PlayerPrefs.SetFloat("HighScorePerMaze"+key, currentScore);
+				PlayerPrefs.SetString("NamePerMaze"+key, currentName);
+
+				currentScore = score;
+				currentName = name;
+			}
+
+//			Debug.Log(i +" last name: " + name + "last score: " + score);
+//			Debug.Log("key : " + key);
+//			Debug.Log(i +" name: " + PlayerPrefs.GetString("NamePerMaze"+key) + "score: " +  PlayerPrefs.GetFloat("HighScorePerMaze"+key));
+
+		}
+	}
+
+	public float GetMazeHighScore()
+	{
+		string key =  GetCurrentMazeIndex() +"_"+0.ToString();
+		return  PlayerPrefs.GetFloat("HighScorePerMaze"+key, 0f);
+	}
+
+	public float GetMazeHighScore(int mazeIndex, int rank)
+	{
+		string key =  mazeIndex +"_"+rank.ToString();
+		return  PlayerPrefs.GetFloat("HighScorePerMaze"+key, 0f);
+	}
+
+	public string GetMazeHighScoreName(int mazeIndex, int rank)
+	{
+		string key = mazeIndex +"_"+rank.ToString();
+		return  PlayerPrefs.GetString("NamePerMaze"+key, "");
+	}
+
+	public void SaveLocalHighScore(float currentScore)
+	{
+		PlayerPrefs.SetFloat("LocalHighScore"+GetCurrentMazeIndex().ToString(),currentScore);
+	}
+
+	public float GetLocalHighScore(int mazeIndex)
+	{
+		return PlayerPrefs.GetFloat("LocalHighScore"+mazeIndex.ToString(), 0f);
+	}
+
+	private void ResetLocalHighScore()
+	{
+		for(int i = 0; i < 15; i++)
+		{
+			PlayerPrefs.SetFloat("LocalHighScore"+ (i+1).ToString(),0f);
+		}
+	}
+
+	public void SaveOverallHighScore(float currentScore, int overallIndex)
+	{
+		string currentName = GetPlayerName();
+		int level = overallIndex;
+
+		for(int i = 0; i< highScoreCount; i++)
+		{
+			string key = level.ToString() +"_"+i.ToString();
+			float score = PlayerPrefs.GetFloat("HighScoreOverall"+key, 0f);
+			string name = PlayerPrefs.GetString("NameOverall"+key,null);
+
+			if(score == 0f)
+			{
+				PlayerPrefs.SetFloat("HighScoreOverall"+key, currentScore);
+				PlayerPrefs.SetString("NameOverall"+key, currentName);
+
+				currentScore = score;
+				currentName = name;
+			}
+
+			else if(currentScore < score){
+				PlayerPrefs.SetFloat("HighScoreOverall"+key, currentScore);
+				PlayerPrefs.SetString("NameOverall"+key, currentName);
+
+				currentScore = score;
+				currentName = name;
+			}
+
+			//			Debug.Log(i +" last name: " + name + "last score: " + score);
+			//			Debug.Log("key : " + key);
+			//			Debug.Log(i +" name: " + PlayerPrefs.GetString("NamePerMaze"+key) + "score: " +  PlayerPrefs.GetFloat("HighScorePerMaze"+key));
+
+		}
+	}
+
+	public float GetOverallScore(int overallIndex, int rank)
+	{
+		string key =  overallIndex +"_"+rank.ToString();
+		return  PlayerPrefs.GetFloat("HighScoreOverall"+key, 0f);
+	}
+
+	public string GetOverallName(int overallIndex, int rank)
+	{
+		string key = overallIndex +"_"+rank.ToString();
+		return  PlayerPrefs.GetString("NameOverall"+key, "");
+	}
+
+
+	public void SaveOverallScore()
+	{
+		float easy = 0f;
+		float medium = 0f;
+		float hard = 0f;
+
+		for(int i = 0; i < 15; i++)
+		{
+			float score = GetLocalHighScore(i+1);
+
+			if(score == 0f){
+				break; return;
+			}
+
+			if(i+1 < 10) //easy
+				easy += score;
+			else if(i+1 < 15) //medium
+				medium += score;
+			else if(i+1 == 15) //hard
+				hard += score;
+		}
+
+		SaveOverallHighScore(easy, 0);
+		SaveOverallHighScore(medium, 1);
+		SaveOverallHighScore(hard, 2);
 	}
 
 	#endregion

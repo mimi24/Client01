@@ -17,6 +17,7 @@ public class PlayerCollision : MonoBehaviour {
 
 		if (col.tag == "Flag") {
 			Invoke("ShowGameOver", 0.5f);
+			IngameController.instance.isGameOver = true;
 			col.gameObject.SetActive(false);
 		}
 	}

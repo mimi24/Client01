@@ -9,16 +9,8 @@ public class Stage : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if(isLevel)
-		{
-			if(DataManager.instance.isInCurrentLevel())
-				UnlockStage();
-		}
-		else
-		{
-			if(stageNum <= DataManager.instance.GetCurrentLevel())
-				UnlockStage();
-		}
+		if(stageNum <= DataManager.instance.GetCurrentMazeStage())
+			UnlockStage();
 	}
 
 	void UnlockStage()

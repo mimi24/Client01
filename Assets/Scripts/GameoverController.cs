@@ -16,9 +16,10 @@ public class GameoverController : MonoBehaviour {
 	void OnEnable () {
 		gemText.text = DataManager.instance.GetGemCount().ToString();
 		Timer.instance.DisplayTime(true, currentTimeText);
+		Timer.instance.DisplayTime(false, highScoreText);
 
 		StartCoroutine(AnimateStar());
-		DisplayHighScore();
+		//DisplayHighScore();
 	}
 
 	IEnumerator AnimateStar()
@@ -39,7 +40,7 @@ public class GameoverController : MonoBehaviour {
 
 	void DisplayHighScore()
 	{
-		int levelIndex = DataManager.instance.GetLevelIndex();
+		int levelIndex = DataManager.instance.GetPerDifficultyIndex();
 		if(levelIndex != 0){
 			Timer.instance.DisplayTime(false, highScoreText);
 			highScoreText.transform.parent.gameObject.SetActive(true);
