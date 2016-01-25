@@ -53,10 +53,17 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			CheckGroundStatus();
 			move = Vector3.ProjectOnPlane(move, m_GroundNormal);
 			m_TurnAmount = Mathf.Atan2(move.x, move.z);
+			if (m_TurnAmount == Mathf.PI) 
+				m_TurnAmount = 0f;
 			m_ForwardAmount = move.z;
-
-			ApplyExtraTurnRotation();
-
+			if (m_ForwardAmount >= -.5f)
+				ApplyExtraTurnRotation ();
+			else if (m_ForwardAmount < -.75f) {
+				m_TurnAmount = 0f;
+				Debug.Log (m_TurnAmount);
+			}
+				
+			//Debug.Log (m_ForwardAmount);
 			// control and velocity handling is different when grounded and airborne:
 			if (m_IsGrounded)
 			{
@@ -179,7 +186,10 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		{
 			// help the character turn faster (this is in addition to root rotation in the animation)
 			float turnSpeed = Mathf.Lerp(m_StationaryTurnSpeed, m_MovingTurnSpeed, m_ForwardAmount);
+			//float turnSpeed = 1f;
+			Debug.Log(turnSpeed);
 			transform.Rotate(0, m_TurnAmount * turnSpeed * Time.deltaTime, 0);
+	
 		}
 
 
