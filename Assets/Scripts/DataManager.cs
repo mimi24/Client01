@@ -235,26 +235,42 @@ public class DataManager : MonoBehaviour {
 		float easy = 0f;
 		float medium = 0f;
 		float hard = 0f;
+		bool isModeComplete = true;
 
-		for(int i = 0; i < 15; i++)
+		for(int i = 1; i <= 9; i++)
 		{
-			float score = GetLocalHighScore(i+1);
+			float score = GetLocalHighScore(i);
 
 			if(score == 0f){
+				isModeComplete = false;
 				break; return;
 			}
-
-			if(i+1 < 10) //easy
-				easy += score;
-			else if(i+1 < 15) //medium
-				medium += score;
-			else if(i+1 == 15) //hard
-				hard += score;
+			easy += score;
 		}
 
-		SaveOverallHighScore(easy, 0);
-		SaveOverallHighScore(medium, 1);
-		SaveOverallHighScore(hard, 2);
+		if(isModeComplete)
+			SaveOverallHighScore(easy, 0);
+
+		isModeComplete = true;
+
+		for(int i = 10; i <= 14; i++)
+		{
+			float score = GetLocalHighScore(i);
+
+			if(score == 0f){
+				isModeComplete = false;
+				break; return;
+			}
+			medium += score;
+		}
+
+		if(isModeComplete)
+			SaveOverallHighScore(medium, 1);
+
+		if( GetLocalHighScore(15) != 0)
+			SaveOverallHighScore(GetLocalHighScore(15), 2);
+		
+	
 	}
 
 	#endregion
@@ -272,10 +288,32 @@ public class DataManager : MonoBehaviour {
 	}
 	#endregion
 
+	public int GetCharacter()
+	{
+		return PlayerPrefs.GetInt("Character", 0);
+	}
+
+	public void SetCharacter(int charIndex)
+	{
+		PlayerPrefs.SetInt("Character", charIndex);
+	}
+
+	public int GetBoughtCharacter()
+	{
+		return PlayerPrefs.GetInt("BoughtCharacter", 0);
+	}
+
+	public void SetBoughtCharacter(int charIndex)
+	{
+		PlayerPrefs.SetInt("BoughtCharacter", charIndex);
+	}
+
 	public void ResetData()
 	{
 		Debug.Log("Reset Data ----->");
 		PlayerPrefs.DeleteAll();
 		
 	}
+
+
 }

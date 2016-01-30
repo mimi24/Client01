@@ -31,7 +31,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 		bool m_Crouching;
 
 
-		void Start()
+		void OnEnable()
 		{
 			m_Animator = GetComponent<Animator>();
 			m_Rigidbody = GetComponent<Rigidbody>();
@@ -60,7 +60,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 				ApplyExtraTurnRotation ();
 			else if (m_ForwardAmount < -.75f) {
 				m_TurnAmount = 0f;
-				Debug.Log (m_TurnAmount);
+//				Debug.Log (m_TurnAmount);
 			}
 				
 			//Debug.Log (m_ForwardAmount);
@@ -187,7 +187,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson
 			// help the character turn faster (this is in addition to root rotation in the animation)
 			float turnSpeed = Mathf.Lerp(m_StationaryTurnSpeed, m_MovingTurnSpeed, m_ForwardAmount);
 			//float turnSpeed = 1f;
-			Debug.Log(turnSpeed);
+			//Debug.Log(turnSpeed);
 			transform.Rotate(0, m_TurnAmount * turnSpeed * Time.deltaTime, 0);
 	
 		}
