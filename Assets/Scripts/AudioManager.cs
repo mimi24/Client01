@@ -16,8 +16,10 @@ public class AudioManager : MonoBehaviour {
     public void PlayNextSong()
     {
         audioSrc.clip = audioClips[Random.Range(0, audioClips.Count)];
-        audioSrc.Play();
-        Invoke("PlayNextSong", audioSrc.clip.length);
+		if (DataManager.instance.isToggle ()) {
+			audioSrc.Play ();
+			Invoke ("PlayNextSong", audioSrc.clip.length);
+		}
     }
 
 }
