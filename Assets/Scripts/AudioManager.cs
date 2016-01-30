@@ -23,4 +23,12 @@ public class AudioManager : MonoBehaviour {
 		}
     }
 
+	void Update() {
+		if (PlayerPrefs.GetInt("toggle:") == 0) {
+			audioSrc.volume = 1;
+		} else {
+			audioSrc.volume = 0;
+		}
+	}
+
 }
