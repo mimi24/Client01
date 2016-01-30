@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class DataManager : MonoBehaviour {
-
 	public static DataManager instance;
 	private int highScoreCount = 3;
 
@@ -12,11 +12,12 @@ public class DataManager : MonoBehaviour {
 	void Awake () {
 		instance = this;
 
-
 		if (PlayerPrefs.GetInt ("toggle:") == 0) {
-
+			hasToggle = true;
 		}
 	}
+
+
 
 	void Update()
 	{
@@ -287,13 +288,19 @@ public class DataManager : MonoBehaviour {
 	bool hasToggle = false;
 	public void ToggleSounds() {
 		
-		if (PlayerPrefs.GetInt ("toggle:") == 0) {
-			hasToggle = true;
-		} else {
+		if (PlayerPrefs.GetInt ("toggle:") == 1) {
+			Debug.Log ("here");
 			hasToggle = false;
+			PlayerPrefs.SetInt ("toggle:", 0);
+		} else {
+			hasToggle = true;
+			Debug.Log ("dadadsa");
+			PlayerPrefs.SetInt ("toggle:", 1);
 		}
 	}
+
 	public bool isToggle() {
+		Debug.Log ("is toggle:" + hasToggle);
 		return hasToggle;
 	}
 }
