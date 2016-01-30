@@ -75,26 +75,47 @@ public class IngameController : MonoBehaviour{
 	{
 		PlayBtnSound ();
 		Time.timeScale = 1f;
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		LoadingController.instance.FadeIn();
+		Invoke("Restart", 0.5f);
 	}
 
 	public void OnClickNext()
 	{
 		PlayBtnSound ();
+		LoadingController.instance.FadeIn();
+
+		if(DataManager.instance.GetCurrentMazeIndex() == 15)
+			Invoke("LoadMenu", 0.5f);
+		else
+			Invoke("LoadNext", 0.5f);
+	}
+
+	void LoadNext()
+	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+	}
+
+	void Restart()
+	{
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
 
 	public void OnClickMenu()
 	{
 		PlayBtnSound ();
 		Time.timeScale = 1f;
-		SceneManager.LoadScene(0);
+		LoadingController.instance.FadeIn();
+		Invoke("LoadMenu", 0.5f);
 	}
 
 	public void OnClickLevel()
 	{
 		PlayBtnSound ();
 		Time.timeScale = 1f;
+	}
+
+	void LoadMenu()
+	{
 		SceneManager.LoadScene(0);
 	}
 
