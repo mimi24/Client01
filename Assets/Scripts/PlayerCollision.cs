@@ -12,6 +12,7 @@ public class PlayerCollision : MonoBehaviour {
 		if (col.tag == "Diamond") {
 			iTween.MoveTo(col.gameObject, iTween.Hash("y", 1f,"time",5f));
 			IngameController.instance.UpdateGem();
+			DiamondManager.instance.SavePickedGem (col.gameObject);
 			Destroy(col.gameObject, 2f);
 		}
 

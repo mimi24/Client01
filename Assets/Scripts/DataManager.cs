@@ -11,6 +11,11 @@ public class DataManager : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		instance = this;
+
+
+		if (PlayerPrefs.GetInt ("toggle:") == 0) {
+
+		}
 	}
 
 	void Update()
@@ -277,5 +282,18 @@ public class DataManager : MonoBehaviour {
 		Debug.Log("Reset Data ----->");
 		PlayerPrefs.DeleteAll();
 		
+	}
+
+	bool hasToggle = false;
+	public void ToggleSounds() {
+		
+		if (PlayerPrefs.GetInt ("toggle:") == 0) {
+			hasToggle = true;
+		} else {
+			hasToggle = false;
+		}
+	}
+	public bool isToggle() {
+		return hasToggle;
 	}
 }
