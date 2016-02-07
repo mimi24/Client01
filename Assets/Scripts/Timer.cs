@@ -63,17 +63,17 @@ public class Timer : MonoBehaviour {
 			return;
 	
 		saveOnce = true;
-		if(timeTobeat == 0f){
-			timeTobeat = currentTime;
-			DataManager.instance.SaveMazeHighScore(timeTobeat);
-		}
-
-		else if(currentTime < timeTobeat)
-		{
-			timeTobeat = currentTime;
-			DataManager.instance.SaveMazeHighScore(timeTobeat);
-		}
-
+//		if(timeTobeat == 0f){
+//			timeTobeat = currentTime;
+//			DataManager.instance.SaveMazeHighScore(timeTobeat);
+//		}
+//
+//		else if(currentTime < timeTobeat)
+//		{
+//			timeTobeat = currentTime;
+//			DataManager.instance.SaveMazeHighScore(timeTobeat);
+//		}
+		DataManager.instance.SaveMazeHighScore(currentTime);
 		//Save locally to get overall
 		float localScore = DataManager.instance.GetLocalHighScore(DataManager.instance.GetCurrentMazeIndex());
 		if(localScore == 0f)

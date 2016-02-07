@@ -15,12 +15,16 @@ public class MenuController : MonoBehaviour {
 	public InputField inputNameField;
 	public Button okButton;
 	public Text name;
+	public AudioClip btnSound;
+	public AudioSource audioSource;
 
 	private GameObject menuPanel;
 	private string playerName;
 
 	// Use this for initialization
 	void Start () {
+		audioSource.clip = btnSound;
+		audioSource.playOnAwake = false;
 		menuPanel = transform.GetChild(0).gameObject;
 		playerName =  DataManager.instance.GetPlayerName();
 		Debug.Log(playerName);
@@ -105,4 +109,13 @@ public class MenuController : MonoBehaviour {
 		playerName = null;
 		DataManager.instance.ResetCurrentMazeStage();
 	}
+
+	public void PlayBtnSound() {
+		Debug.Log ("PlayBtnSound");
+		if (DataManager.instance.isToggle ()) {
+			audioSource.PlayOneShot (btnSound);
+		}
+
+	}
+
 }

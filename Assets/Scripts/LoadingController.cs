@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class LoadingController : MonoBehaviour {
 
 	public static LoadingController instance;
+
 	CanvasGroup loadingCanvas;
 	Image _image;
 
@@ -14,6 +15,7 @@ public class LoadingController : MonoBehaviour {
 		instance = this;
 		loadingCanvas = GetComponent<CanvasGroup>();
 		_image = GetComponent<Image>();
+
 	}
 
 	void Start()
@@ -38,4 +40,5 @@ public class LoadingController : MonoBehaviour {
 		_image.CrossFadeAlpha(0f, 0.5f, true);
 
 	}
+
 }
