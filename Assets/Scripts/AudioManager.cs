@@ -15,16 +15,23 @@ public class AudioManager : MonoBehaviour {
     }
     public void PlayNextSong()
     {
+		
         audioSrc.clip = audioClips[Random.Range(0, audioClips.Count)];
+		audioSrc.Play ();
 		if (DataManager.instance.isToggle ()) {
 			Debug.Log ("dasdasdasdsadasd");
-			audioSrc.Play ();
+
 			Invoke ("PlayNextSong", audioSrc.clip.length);
 		}
     }
 
 	void Update() {
-		if (PlayerPrefs.GetInt("toggle:") == 0) {
+//		if (PlayerPrefs.GetInt("toggle:") == 0) {
+//			audioSrc.volume = 1;
+//		} else {
+//			audioSrc.volume = 0;
+//		}
+		if (DataManager.instance.isToggle ()) {
 			audioSrc.volume = 1;
 		} else {
 			audioSrc.volume = 0;

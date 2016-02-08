@@ -13,8 +13,8 @@ public class DataManager : MonoBehaviour {
 		instance = this;
 
 		if (PlayerPrefs.GetInt ("toggle:") == 0) {
-			hasToggle = true;
-		}
+//			hasToggle = true;//
+		} 
 	}
 
 
@@ -325,18 +325,18 @@ public class DataManager : MonoBehaviour {
 	public void ToggleSounds() {
 		
 		if (PlayerPrefs.GetInt ("toggle:") == 1) {
-			Debug.Log ("is toggle = false");
-			hasToggle = false;
+//			hasToggle = false;//
 			PlayerPrefs.SetInt ("toggle:", 0);
 		} else {
-			hasToggle = true;
-			Debug.Log ("is toggle = true");
+//			hasToggle = true;//
 			PlayerPrefs.SetInt ("toggle:", 1);
 		}
 	}
 
 	public bool isToggle() {
-		Debug.Log ("is toggle:" + hasToggle);
-		return hasToggle;
+//		Debug.Log ("is toggle:" + hasToggle);
+		bool isToggle = PlayerPrefs.GetInt("toggle:") == 0? true:false;
+			Debug.Log ("istoggle:" + isToggle);
+		return isToggle;
 	}
 }

@@ -12,14 +12,15 @@ public class ToggleSoundManager : MonoBehaviour {
 		} else {
 			GetComponent<Button> ().image.overrideSprite = soundOff;
 		}
+
 	}
 
 	public void OnClick() {
 		if (DataManager.instance.isToggle ()) {
-			GetComponent<Button> ().image.overrideSprite = soundOff;
+			GetComponent<Button> ().image.overrideSprite = soundOn;
 
 		} else {
-			GetComponent<Button> ().image.overrideSprite = soundOn;
+			GetComponent<Button> ().image.overrideSprite = soundOff;
 		}
 	}
 }
