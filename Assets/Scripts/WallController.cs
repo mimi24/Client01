@@ -21,9 +21,9 @@ public class WallController : MonoBehaviour {
         int sceneIndex = SceneManager.GetActiveScene().buildIndex;
 
         if (sceneIndex > 0 && sceneIndex <= 9)
-            wallPathString = "Textures/Crate04";
+			wallPathString = "Textures/leaves2";
         else if (sceneIndex > 9 && sceneIndex <= 14)
-            wallPathString = "Textures/Rock02";
+			wallPathString = "Textures/sand";
         else
             wallPathString = "Textures/Wall01";
 
