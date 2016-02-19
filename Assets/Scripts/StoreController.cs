@@ -25,19 +25,27 @@ public class StoreController : MonoBehaviour {
 	{
 		for(int i = 0; i < characters.Count; i++)
 		{
-			if(i <= DataManager.instance.GetBoughtCharacter())
+			if(i == DataManager.instance.GetBoughtCharacter())
 			{
 				characters[i].btnBuy.gameObject.SetActive(false);
 				characters[i].btnUse.gameObject.SetActive(true);
+				Debug.Log (characters [i].gameObject);
 			}
 
-			if(DataManager.instance.GetCharacter() == i)
+			if (DataManager.instance.GetCharacter () == i) {
 				characters[i].btnUse.interactable = false;
-			else
+			}
+				
+			else {
+				Debug.Log (DataManager.instance.GetCharacter ());
 				characters[i].btnUse.interactable = true;
+			}
+				
 
-			if(gemCount < GetPrice(i))
+			if (gemCount < GetPrice (i)) {
 				characters[i].btnBuy.interactable = false;
+			}
+				
 		}
 	}
 

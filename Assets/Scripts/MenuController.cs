@@ -108,6 +108,9 @@ public class MenuController : MonoBehaviour {
 		inputNameField.text = "";
 		playerName = null;
 		DataManager.instance.ResetCurrentMazeStage();
+		DataManager.instance.ResetAllDataExceptHighScore ();
+
+		Debug.Log("here");
 	}
 
 	public void PlayBtnSound() {

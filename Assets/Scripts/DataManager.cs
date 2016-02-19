@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class DataManager : MonoBehaviour {
 	public static DataManager instance;
 	private int highScoreCount = 3;
+	[SerializeField]
+	public List<string> sceneList = new List<string>();
 
 	// Use this for initialization
 	void Awake () {
@@ -15,6 +17,7 @@ public class DataManager : MonoBehaviour {
 		if (PlayerPrefs.GetInt ("toggle:") == 0) {
 //			hasToggle = true;//
 		} 
+
 	}
 
 
@@ -23,6 +26,26 @@ public class DataManager : MonoBehaviour {
 	{
 		if(Input.GetKeyDown(KeyCode.X))
 			ResetData();
+
+		if (Input.GetKeyDown (KeyCode.C)) {
+			PlayerPrefs.SetInt("BoughtCharacter", 0);
+//			Debug.Log (PlayerPrefs.GetInt ("BoughtCharacter"));
+		}
+
+		if (Input.GetKeyDown (KeyCode.V)) {
+			PlayerPrefs.SetInt("BoughtCharacter", 1);
+						Debug.Log (PlayerPrefs.GetInt ("BoughtCharacter"));
+		}
+
+		if (Input.GetKeyDown (KeyCode.B)) {
+			PlayerPrefs.SetInt("BoughtCharacter", 2);
+						Debug.Log (PlayerPrefs.GetInt ("BoughtCharacter"));
+		}
+
+		if (Input.GetKeyDown (KeyCode.N)) {
+			PlayerPrefs.SetInt("BoughtCharacter", 3);
+						Debug.Log (PlayerPrefs.GetInt ("BoughtCharacter"));
+		}
 	}
 
 	public int GetCurrentMazeIndex()
@@ -291,6 +314,14 @@ public class DataManager : MonoBehaviour {
 	public void SaveGemCount(int value)
 	{
 		PlayerPrefs.SetInt("Gem", value);
+	}
+
+	public void ResetAllDataExceptHighScore() {
+		PlayerPrefs.SetInt("Gem", 0);
+		PlayerPrefs.SetInt ("ResetAll", 1);
+		PlayerPrefs.SetInt ("BoughtCharacter", 0);
+		SetCharacter(0);
+		CharacterSelectController.instance.UpdateCharacter(0);
 	}
 	#endregion
 
