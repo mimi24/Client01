@@ -8,7 +8,7 @@ public class DataManager : MonoBehaviour {
 	public static DataManager instance;
 	private int highScoreCount = 3;
 	[SerializeField]
-	public List<string> sceneList = new List<string>();
+	public List<string> gemKeyList = new List<string>();
 
 	// Use this for initialization
 	void Awake () {
@@ -318,7 +318,11 @@ public class DataManager : MonoBehaviour {
 
 	public void ResetAllDataExceptHighScore() {
 		PlayerPrefs.SetInt("Gem", 0);
-		PlayerPrefs.SetInt ("ResetAll", 1);
+
+		for(int i = 0; i < gemKeyList.Count; i++) {
+			Debug.Log (gemKeyList [i]);
+			PlayerPrefs.SetInt (gemKeyList [i], 0);
+		}
 		PlayerPrefs.SetInt ("BoughtCharacter", 0);
 		SetCharacter(0);
 		CharacterSelectController.instance.UpdateCharacter(0);
